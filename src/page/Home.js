@@ -5,16 +5,14 @@ import homebur from '../assest/home-burger.jpg'
 import { GrPrevious, GrNext } from "react-icons/gr";
 import AllProduct from "../component/AllProduct";
 import { Link } from 'react-router-dom';
-
 import { useDispatch } from "react-redux";
 import { setDataProduct } from "../redux/productSlide";
 
 
 const Home = () => {
-  
   const dispatch = useDispatch()
   const productData = useSelector((state) => state.product.productList);
-
+ console.log(productData);
   
   useEffect(()=>{
     (async ()=>{
@@ -29,10 +27,6 @@ const Home = () => {
   if (!productData || productData.length === 0) {
     return <div>Loading...</div>;
   }
- 
-
-  
-  
 
   const loadingArrayFeature = new Array(10).fill(null);
 

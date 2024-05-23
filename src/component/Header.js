@@ -24,22 +24,22 @@ const Header = () => {
   };
   
   return (
-    <header className="shadow-md h-24 md:px-32 px-16 fixed z-10 w-full bg-maincolor text-white ">
+    <header className="shadow-md h-24 md:px-32 px-16 fixed z-10 w-full font-semibold bg-maincolor text-white ">
       <div className="flex items-center h-full justify-between">
         <Link to={""} className="no-underline">
           <div className="h-10">
             <h3 className="flex text-white">
-              TASTY<h3 className="text-[#df2020]">TREATS</h3>
+              TASTY<h3 className="text-main2color">TREATS</h3>
             </h3>
           </div>
         </Link>
 
         <div className="flex items-center">
           <nav className="text-base md:text-lg hidden md:flex space-x-12">
-          <Link to={"/"}  className="text-white no-underline"><p className="hover:text-red-400">Home</p></Link>
-          <Link to={"/menu"} className="text-white no-underline">Menu</Link>
-          <Link to={"/about"} className="text-white no-underline">About</Link>
-          <Link to={"/contact"} className="text-white no-underline">Contact</Link>
+          <Link to={"/"}  className="text-white no-underline"><p className="hover:text-red-400 font-semibold">Home</p></Link>
+          <Link to={"/menu"} className="text-white no-underline"><p className="hover:text-red-400 font-semibold">Menu</p></Link>
+          <Link to={"/about"} className="text-white no-underline"><p className="hover:text-red-400 font-semibold">About</p></Link>
+          <Link to={"/contact"} className="text-white no-underline"><p className="hover:text-red-400 font-semibold">Contact</p></Link>
           </nav>
         </div>
 
