@@ -5,13 +5,13 @@ import homebur from '../assest/home-burger.jpg'
 import { GrPrevious, GrNext } from "react-icons/gr";
 import AllProduct from "../component/AllProduct";
 import { Link } from 'react-router-dom';
-import { useNavigate } from "react-router-dom";
+
 import { useDispatch } from "react-redux";
-import { setDataProduct,addCartItem } from "../redux/productSlide";
+import { setDataProduct } from "../redux/productSlide";
 
 
 const Home = () => {
-  const navigate = useNavigate()
+  
   const dispatch = useDispatch()
   const productData = useSelector((state) => state.product.productList);
 
@@ -29,17 +29,10 @@ const Home = () => {
   if (!productData || productData.length === 0) {
     return <div>Loading...</div>;
   }
-  const productDisplay = productData[0];
+ 
 
   
-  const handleAddCartProduct = (e) => {
-    dispatch(addCartItem(productDisplay))
-  };
-
-  const handleBuy = ()=>{
-    dispatch(addCartItem(productDisplay))
-      navigate("/cart")
-  }
+  
 
   const loadingArrayFeature = new Array(10).fill(null);
 
