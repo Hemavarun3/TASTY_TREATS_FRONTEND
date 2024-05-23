@@ -36,10 +36,10 @@ const Header = () => {
 
         <div className="flex items-center">
           <nav className="text-base md:text-lg hidden md:flex space-x-12">
-          <a href={"/"}  className="text-white no-underline"><p className="hover:text-red-400">Home</p></a>
-          <a href={"menu"} className="text-white no-underline">Menu</a>
-          <a href={"about"} className="text-white no-underline">About</a>
-          <a href={"/contact"} className="text-white no-underline">Contact</a>
+          <Link to={"/"}  className="text-white no-underline"><p className="hover:text-red-400">Home</p></Link>
+          <Link to={"/menu"} className="text-white no-underline">Menu</Link>
+          <Link to={"/about"} className="text-white no-underline">About</Link>
+          <Link to={"/contact"} className="text-white no-underline">Contact</Link>
           </nav>
         </div>
 
