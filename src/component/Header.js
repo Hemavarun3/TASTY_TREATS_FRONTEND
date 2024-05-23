@@ -4,7 +4,6 @@ import { HiOutlineUserCircle } from "react-icons/hi";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutRedux } from "../redux/userSlice";
 import { toast } from "react-hot-toast";
-import Newproduct from '../page/Newproduct';
 
 const Header = () => {
   const [showMenu, setShowMenu] = useState(false);
