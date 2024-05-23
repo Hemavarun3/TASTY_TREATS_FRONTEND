@@ -2,8 +2,6 @@ import React, { useRef,useEffect } from "react";
 import { useSelector } from "react-redux";
 import CardFeature from "../component/CardFeature";
 import homebur from '../assest/home-burger.jpg'
-import { GrPrevious, GrNext } from "react-icons/gr";
-import AllProduct from "../component/AllProduct";
 import { Link } from 'react-router-dom';
 import { useDispatch } from "react-redux";
 import { setDataProduct } from "../redux/productSlide";
@@ -11,7 +9,7 @@ import { setDataProduct } from "../redux/productSlide";
 
 const Home = () => {
   const dispatch = useDispatch()
-  const productData = useSelector((state) => state.product.productList);
+  let productData = useSelector((state) => state.product.productList);
  console.log(productData);
   
   useEffect(()=>{
@@ -27,16 +25,10 @@ const Home = () => {
   if (!productData || productData.length === 0) {
     return <div>Loading...</div>;
   }
-
+  productData=productData.slice(0,4);
   const loadingArrayFeature = new Array(10).fill(null);
 
-  
-  const nextProduct = () => {
-    slideProductRef.current.scrollLeft += 200;
-  };
-  const preveProduct = () => {
-    slideProductRef.current.scrollLeft -= 200;
-  };
+
 
   return (
     <div className="px-8 md:px-32 pt-20 flex flex-col bg-maincolor text-white space-y-10">
@@ -68,26 +60,16 @@ const Home = () => {
       </div>
 
 
+      <div className="space-y-4 md:px-12">
 
 
-
-
-      <div className="space-y-4">
-
-
-        <div className="flex  p-4 items-center justify-between">
-          <div>
-            <h2 className="font-bold text-xl text-main2color"> ALL PRODUCTS </h2>
-          </div>
-          <div className="flex gap-4">
-            <button  onClick={preveProduct} className="bg-main2color text-lg  p-1 rounded" > <GrPrevious /> </button>
-            <button onClick={nextProduct} className="bg-main2color text-lg p-1 rounded " > <GrNext /> </button>
-          </div>
+        <div className="flex p-4 items-center justify-center">
+           <h2 className="font-bold text-xl text-main2color"> MOST SELLING PRODUCTS</h2>
         </div>
 
-        <div className="flex gap-5 overflow-scroll scrollbar-none scroll-smooth transition-all" ref={slideProductRef} >
-          {productData.length>0
-            ? productData.map((el) => {
+        <div className="flex gap-5 flex-col md:flex-row p-16 md:p-0" ref={slideProductRef}  >
+        {productData.length > 0
+          ? productData.map((el) => {
               return (
                 <CardFeature
                   key={el._id + "Evening Special"}
@@ -96,22 +78,17 @@ const Home = () => {
                   category={el.category}
                   price={el.price}
                   image={el.image}
-                  style={{ color: "black", textDecoration: "none" }} />
+                  style={{ color: "black", textDecoration: "none" }}
+                />
               );
             })
-            : loadingArrayFeature.map((el, index) => (
+          : loadingArrayFeature.map((el, index) => (
               <CardFeature loading="Loading..." key={index + "cartLoading"} />
             ))}
-        </div>
-
-
       </div>
 
 
-      <div>
-        <AllProduct heading={"Related Product"} />
       </div>
-
     </div>
   );
 };

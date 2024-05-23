@@ -75,7 +75,7 @@ const Newproduct = () => {
   }
   return (
     <div className="p-4">
-       <form className='m-auto w-full max-w-md  shadow flex flex-col p-3 bg-white' onSubmit={handleSubmit}>
+       <form className='m-auto w-full max-w-md  shadow flex flex-col p-3 bg-maincolor text-white' onSubmit={handleSubmit}>
         <label htmlFor='name'>Name</label>
         <input type={"text"}  name="name" className='bg-slate-200 p-1 my-1' onChange={handleOnChange} value={data.name}/>
 
@@ -98,13 +98,9 @@ const Newproduct = () => {
             {
               data.image ? <img src={data.image} className="h-full" alt='imag'/> :<span className='text-5xl'><BsCloudUpload/></span> 
             }
-            
-            
            <input type={"file"} accept="image/*" id="image" onChange={uploadImage} className="hidden"/>
         </div>
         </label>
-        
-
         <label htmlFor='price' className='my-1'>Price</label>
         <input type={"text"} className='bg-slate-200 p-1 my-1' name='price' onChange={handleOnChange} value={data.price}/>
 

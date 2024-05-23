@@ -6,9 +6,6 @@ import FilterProduct from "./FilterProduct";
 const AllProduct = ({ heading }) => {
   const productData = useSelector((state) => state.product.productList);
 
-  console.log('allproduct');
-  console.log(productData);
-  console.log('allproduct');
   const [filterBy, setFilterBy] = useState("");
   const [dataFilter, setDataFilter] = useState([]);
 
@@ -31,8 +28,8 @@ const AllProduct = ({ heading }) => {
   const loadingArrayFeature = new Array(1).fill(null);
 
   return (
-    <div className="my-5">
-      <h2 className="font-bold text-2xl text-slate-800 mb-4">{heading}</h2>
+    <div className="my-5 flex flex-col items-center">
+      <h2 className="font-bold text-main2color text-2xl  mb-4">{heading}</h2>
 
       <div className="flex gap-4 justify-center overflow-scroll scrollbar-none">
         {categoryList.length > 0 ? (
@@ -51,7 +48,7 @@ const AllProduct = ({ heading }) => {
         )}
       </div>
 
-      <div className="flex justify-center gap-4 my-4">
+      <div className="gap-5 my-4 flex md:flex-row md:flex-wrap flex-col items-center">
         {dataFilter.length > 0 ? (
           dataFilter.map((el) => (
             <CardFeature
