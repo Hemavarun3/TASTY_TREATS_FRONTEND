@@ -1,12 +1,36 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useSelector ,useDispatch } from "react-redux";
 import CartProduct from "../component/cartProduct";
 import emptyCartImage from "../assest/empty.gif";
 import { toast } from "react-hot-toast";
-import { loadStripe } from "@stripe/stripe-js";
 import { useNavigate } from "react-router-dom";
+import { emptyCart } from "../redux/productSlide.js";
 
 const Cart = () => {
+  let final_obj;
+  const dispatch = useDispatch();
+  const Submit = async () => {
+    const user = useSelector((state) => state.user);
+    const curr = useSelector((state) => state.product.cartItem);
+    var cart = [];
+    for (let i = 0; i < curr.length; i++) {
+      cart.push({
+        name: curr[i].name,
+        _id: curr[i]._id,
+        price: curr[i].price,
+        qty: curr[i].qty
+      })
+    }
+    final_obj = {
+      userid : user._id,
+      name: user.name,
+      email: user.email,
+      address: user.address,
+      status : 0,
+      items: cart
+    }
+  };
+  Submit();
   const productCartItem = useSelector((state) => state.product.cartItem);
   const user = useSelector((state) => state.user);
   const navigate = useNavigate();
@@ -22,26 +46,39 @@ const Cart = () => {
 
   const handlePayment = async () => {
     if (user.email) {
-      const stripePromise = await loadStripe(
-        process.env.REACT_APP_STRIPE_PUBLIC_KEY
-      );
       const res = await fetch(
-        `${process.env.REACT_APP_SERVER_DOMAIN}/create-checkout-session`,
+        `${process.env.REACT_APP_SERVER_DOMAIN}/payment`,
         {
           method: "POST",
           headers: {
             "content-type": "application/json",
           },
-          body: JSON.stringify(productCartItem),
+          body: JSON.stringify(final_obj),
         }
       );
       if (res.statusCode === 500) return;
-
-      const data = await res.json();
-      console.log(data);
-
       toast("Redirect to payment Gateway...!");
-      stripePromise.redirectToCheckout({ sessionId: data });
+      setTimeout(() => {
+        navigate("/");
+        const see=async()=>{
+          const order_status = await fetch(`${process.env.REACT_APP_SERVER_DOMAIN}/orders/order`, {
+            method: "post",
+            headers: {
+              "content-type": "application/json"
+            },
+            body: JSON.stringify(final_obj)
+          })
+          const val = await order_status.json();
+          if (!val.alert) {
+            toast(val.data);
+          }
+          else {
+            toast(val.data);
+            dispatch(emptyCart());
+          }
+        }
+        see();
+      }, 3000);
     } else {
       toast("You have not Login!");
       setTimeout(() => {
@@ -78,27 +115,27 @@ const Cart = () => {
           </div>
 
           <div className="md:w-1/4  bg-yellow-600 p-4 text-white font-semibold rounded-2xl">
-              <h2 className="px-24 fon rounded-2xl text-white text-lg">
-                Summary
-              </h2>
-              <div className="space-y-4">
+            <h2 className="px-24 fon rounded-2xl text-white text-lg">
+              Summary
+            </h2>
+            <div className="space-y-4">
               <div className="flex bg-main2color rounded-2xl p-4 items-center w-full py-2 ">
-              <p>Total Qty :</p>
-              <p className="ml-auto w-32 font-bold">{totalQty}</p>
-            </div>
-            <div className="flex w-full py-2  bg-main2color rounded-2xl p-4  justify-between">
-              <p>Total Price</p>
-              <p className="ml-auto w-32 font-bold">
-                <span className="text-white">₹</span> {totalPrice}
-              </p>
-            </div>
-            <button
-              className="bg-main2color w-full px-4 py-2 rounded-2xl"
-              onClick={handlePayment}
-            >
-              Payment
-            </button>
+                <p>Total Qty :</p>
+                <p className="ml-auto w-32 font-bold">{totalQty}</p>
               </div>
+              <div className="flex w-full py-2  bg-main2color rounded-2xl p-4  justify-between">
+                <p>Total Price</p>
+                <p className="ml-auto w-32 font-bold">
+                  <span className="text-white">₹</span> {totalPrice}
+                </p>
+              </div>
+              <button
+                className="bg-main2color w-full px-4 py-2 rounded-2xl"
+                onClick={handlePayment}
+              >
+                Payment
+              </button>
+            </div>
           </div>
         </div>
       ) : (

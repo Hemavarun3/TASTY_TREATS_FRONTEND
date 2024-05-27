@@ -40,7 +40,7 @@ const Menu = () => {
   return (
     <div className="mt-10 flex flex-col p-16">
     
-      <div className="w-full max-w-2xl m-auto p-1 md:p-4  md:flex bg-yellow-600 rounded-xl text-white flex flex-col md:flex-row">
+      <div className="w-full max-w-xl m-auto p-1 md:p-4  md:flex bg-yellow-600 rounded-xl text-white flex flex-col md:flex-row">
         <div className="max-w-sm overflow-hidden w-full p-5">
           <img
             src={productDisplay.image}
@@ -64,7 +64,7 @@ const Menu = () => {
         </div>
       </div>
 
-      <div className="md:p-24">
+      <div className="md:p-8 p-2">
           <AllProduct heading={"Related Product"}/>
       </div>
     </div>

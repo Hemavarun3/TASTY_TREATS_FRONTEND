@@ -21,11 +21,11 @@ const CardFeature = ({ image, name, price, category, loading, id }) => {
       {image ? (
         <>
           <Link to={`/menu/${id}`} onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })} className="no-underline">
-            <div className="h-48 flex justify-center items-center">
+            <div className="flex justify-center items-center">
               <img src={image} className="h-48 w-48  rounded-md" alt="product" />
             </div>
             <h3 className="font-semibold text-white capitalize text-lg mt-4 whitespace-nowrap overflow-hidden"> {name} </h3>
-            <p className="text-gray-300 font-medium">{category}</p>
+            <p className="text-white font-medium">{category}</p>
             <p className="font-bold text-white mt-2">
               <span className="text-yellow-500">₹</span>
               <span>{price}</span>

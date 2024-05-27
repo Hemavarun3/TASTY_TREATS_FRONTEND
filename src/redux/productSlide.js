@@ -4,6 +4,7 @@ import { toast } from "react-hot-toast";
 const initialState = {
   productList: [],
   cartItem: [],
+  orders :[]
 };
 
 export const productSlice = createSlice({
@@ -11,7 +12,6 @@ export const productSlice = createSlice({
   initialState,
   reducers: {
     setDataProduct: (state, action) => {
-      console.log(action.payload);
       state.productList = [...action.payload];
     },
     addCartItem: (state, action) => {
@@ -31,7 +31,6 @@ export const productSlice = createSlice({
       toast("one Item Delete");
       const index = state.cartItem.findIndex((el) => el._id === action.payload);
       state.cartItem.splice(index, 1);
-      console.log(index);
     },
     increaseQty: (state, action) => {
       const index = state.cartItem.findIndex((el) => el._id === action.payload);
@@ -57,6 +56,16 @@ export const productSlice = createSlice({
         state.cartItem[index].total = total;
       }
     },
+    emptyCart : (state,action) =>{
+      state.cartItem=[]
+    },
+    setOrders : (state,action) => {
+        state.orders = [...action.payload];
+    },
+    deleteOrder : (state,action) => {
+      const index=state.orders.findIndex((el) => el._id===action.payload._id);
+      state.orders.splice(index,1);
+    }
   },
 });
 
@@ -66,6 +75,9 @@ export const {
   deleteCartItem,
   increaseQty,
   decreaseQty,
+  emptyCart,
+  setOrders,
+  deleteOrder
 } = productSlice.actions;
 
 export default productSlice.reducer;

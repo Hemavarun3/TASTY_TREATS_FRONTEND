@@ -1,9 +1,11 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App.js";
-import './index.css'
-
+import './index.css';
 import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider} from "react-router-dom";
+
+
+
 import Home from "./page/Home";
 import Menu from "./page/Menu";
 import About from "./page/About";
@@ -14,8 +16,8 @@ import Signup from "./page/Signup";
 import { store } from "./redux/index";
 import { Provider } from "react-redux";
 import Cart from "./page/Cart";
-import Success from "./page/Success";
-import Cancel from "./page/Cancel";
+import Dashboard from "./page/Dashboard.js";
+import UserOrders from "./page/userorders.js";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -28,8 +30,8 @@ const router = createBrowserRouter(
       <Route path="newproduct" element={<Newproduct />} />
       <Route path="signup" element={<Signup />} />
       <Route path="cart" element={<Cart />} />
-      <Route path="success" element={<Success/>}/>
-      <Route path="cancel" element={<Cancel/>}/>
+      <Route path="dashboard" element={<Dashboard/>}/>
+      <Route path="orders" element={<UserOrders />}/>
     </Route>
   )
 );

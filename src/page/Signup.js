@@ -15,7 +15,8 @@ function Signup() {
     email: "",
     password: "",
     confirmPassword: "",
-    image: ""
+    image: "",
+    address : ""
   });
 
   const handleShowPassword = () => {
@@ -51,18 +52,18 @@ function Signup() {
   }
   console.log(process.env.REACT_APP_SERVER_DOMIN)
   const handleSubmit = async (e) => {
-    console.log('im-pressed');
+    //console.log('im-pressed');
     e.preventDefault();
-    const { firstName, email, password, confirmPassword } = data;
+    const { firstName, email, password, confirmPassword , address } = data;
 
 
-    const isGmail = email.endsWith('@gmail.com');
+    const isGmail = 1
 
     if (!isGmail) {
-      alert('Please enter a valid Gmail address');
+      toast('Please enter a valid Gmail address');
       return;
     }
-    if (firstName && email && password && confirmPassword) {
+    if (firstName && email && password && confirmPassword && address) {
       if (password === confirmPassword) {
 
         const fetchData = await fetch(`${process.env.REACT_APP_SERVER_DOMAIN}/users/signup`, {
@@ -83,16 +84,16 @@ function Signup() {
         }
         navigate('/');
       } else {
-        alert("password and confirm password not equal");
+        toast("password and confirm password not equal");
       }
     } else {
-      alert("Please Enter required fields");
+      toast("Please Enter required fields");
     }
   };
 
   return (
-    <div className="p-3 md:p-4 bg-maincolor">
-      <div className="w-full max-w-sm  m-auto flex  flex-col p-4">
+    <div className=" bg-maincolor">
+      <div className="w-full max-w-sm  m-auto flex  flex-col pb-16 pt-8">
         {/* <h1 className='text-center text-2xl font-bold'>Sign up</h1> */}
         <div className="w-20 h-20 overflow-hidden rounded-full drop-shadow-md shadow-md m-auto relative">
           <img src={data.image ? data.image : loginSignupImage} className="w-full h-full" alt="imag" />
@@ -171,8 +172,16 @@ function Signup() {
               {showConfirmPassword ? <BiShow /> : <BiHide />}
             </span>
           </div>
-
-          <div className="flex  space-x-2">
+          <label htmlFor="Address"><span className="text-white">Address</span></label>
+          <input
+            type={"text"}
+            id="Address"
+            name="address"
+            className="mt-1 mb-2 w-full bg-slate-200 px-2 py-1 rounded focus-within:outline-blue-300"
+            value={data.address}
+            onChange={handleOnChange}
+          />
+          <div className="flex items-center ">
             <button className="w-full max-w-[150px] m-auto  bg-red-500 hover:bg-red-600 cursor-pointer  text-white text-xl font-medium text-center py-1 rounded-full mt-4">
               Login
             </button>

@@ -10,15 +10,12 @@ import { setDataProduct } from "../redux/productSlide";
 const Home = () => {
   const dispatch = useDispatch()
   let productData = useSelector((state) => state.product.productList);
- console.log(productData);
-  
-  useEffect(()=>{
-    (async ()=>{
+    const my= async () => {
       const res = await fetch(`${process.env.REACT_APP_SERVER_DOMAIN}/products/allProducts`)
       const resData = await res.json();
       dispatch(setDataProduct(resData))
-    })()
-  },[dispatch]);
+    };
+    my();
 
 
   const slideProductRef = useRef();
@@ -37,12 +34,12 @@ const Home = () => {
 
 
       <div className="w-full flex flex-col space-y-16  md:space-y-0 md:flex-row">
-        <div className="flex space-y-2 flex-col pt-32 px-11 sm:py-16 md:my-3">
+        <div className="flex space-y-8 flex-col pt-32 px-11 sm:py-16 md:my-3">
           <div>
-            <h3>  Welcome To TastyTreats </h3>
+            <h3 className="text-4xl">  Welcome To TastyTreats </h3>
           </div>
           <div>
-            <h1> Special Tasty Fastfood. </h1>
+            <h1 className="text-5xl"> Special Tasty Fastfood. </h1>
           </div>
           <div>
             <p>
@@ -67,7 +64,7 @@ const Home = () => {
            <h2 className="font-bold text-xl text-main2color"> MOST SELLING PRODUCTS</h2>
         </div>
 
-        <div className="flex gap-5 flex-col md:flex-row p-16 md:p-0" ref={slideProductRef}  >
+        <div className="flex gap-5 flex-col md:flex-row justify-center p-16 md:p-0" ref={slideProductRef}  >
         {productData.length > 0
           ? productData.map((el) => {
               return (

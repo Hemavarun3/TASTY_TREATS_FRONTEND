@@ -24,12 +24,12 @@ const Header = () => {
   };
 
   return (
-    <header className="shadow-md h-24 md:px-32 px-16 fixed z-10 w-full font-semibold bg-maincolor text-white">
+    <header className="shadow-md h-24 md:px-32 px-6 fixed z-10 w-full font-semibold bg-maincolor text-white">
       <div className="flex items-center h-full justify-between">
         <Link to={""} className="no-underline">
           <div className="h-10">
-            <h3 className="flex text-white ">
-              TASTY<h3 className="text-main2color">TREATS</h3>
+            <h3 className="flex text-white text-2xl">
+              TASTY<span className="text-main2color">TREATS</span>
             </h3>
           </div>
         </Link>
@@ -38,11 +38,20 @@ const Header = () => {
           <nav className="text-base md:text-lg hidden md:flex space-x-12">
           <Link to={"/"}  className="text-white no-underline"><p className="hover:text-red-400 font-semibold">Home</p></Link>
           <Link to={"/menu"} className="text-white no-underline"><p className="hover:text-red-400 font-semibold">Menu</p></Link>
-          <Link to={"/about"} className="text-white no-underline"><p className="hover:text-red-400 font-semibold">About</p></Link>
-          <Link to={"/contact"} className="text-white no-underline"><p className="hover:text-red-400 font-semibold">Contact</p></Link>
-          {userData.email === process.env.REACT_APP_ADMIN_EMAIL && (
-            <Link to={"/newproduct"} className="text-white no-underline"><p className="hover:text-red-400 font-semibold">New Product</p></Link>
+          {userData.email !== process.env.REACT_APP_ADMIN_EMAIL && (
+            <Link to={"/orders"} className="text-white no-underline"><p className="hover:text-red-400 font-semibold">Orders</p></Link>
           )}
+          {userData.email === process.env.REACT_APP_ADMIN_EMAIL ? (
+            <Link to={"/dashboard"} className="text-white no-underline"><p className="hover:text-red-400 font-semibold">Dashboard</p></Link>
+          ): (
+            <Link to={"/about"} className="text-white no-underline"><p className="hover:text-red-400 font-semibold">About</p></Link>
+          )}
+          {userData.email === process.env.REACT_APP_ADMIN_EMAIL ? (
+            <Link to={"/newproduct"} className="text-white no-underline"><p className="hover:text-red-400 font-semibold">New Product</p></Link>
+          ): (
+            <Link to={"/contact"} className="text-white no-underline"><p className="hover:text-red-400 font-semibold">Contact</p></Link>
+          )}
+
           </nav>
         </div>
 
@@ -76,14 +85,22 @@ const Header = () => {
             </button>
 
             {showMenu && (
-              <div ref={menuRef} className="right-0  bg-yellow-600 border border-gray-200 py-2 shadow-lg rounded-md w-48 z-50 md:hidden mt-2 absolute flex font-semibold" >
+              <div ref={menuRef} className="right-0  bg-yellow-600 border  py-2 shadow-lg rounded-md w-48 z-50 md:hidden mt-2 absolute flex font-semibold" >
                 <nav className="text-base md:text-lg flex flex-col px-4 py-2">
                 <Link to={"/"}  className="text-white no-underline"><p className="hover:text-red-400 font-semibold">Home</p></Link>
                 <Link to={"/menu"} className="text-white no-underline"><p className="hover:text-red-400 font-semibold">Menu</p></Link>
-                <Link to={"/about"} className="text-white no-underline"><p className="hover:text-red-400 font-semibold">About</p></Link>
-                <Link to={"/contact"} className="text-white no-underline"><p className="hover:text-red-400 font-semibold">Contact</p></Link>
-                {userData.email === process.env.REACT_APP_ADMIN_EMAIL && (
+                {userData.email !== process.env.REACT_APP_ADMIN_EMAIL && (
+                  <Link to={"/orders"} className="text-white no-underline"><p className="hover:text-red-400 font-semibold">Orders</p></Link>
+                )}
+                {userData.email === process.env.REACT_APP_ADMIN_EMAIL ? (
+                  <Link to={"/dashboard"} className="text-white no-underline"><p className="hover:text-red-400 font-semibold">Dashboard</p></Link>
+                ): (
+                  <Link to={"/about"} className="text-white no-underline"><p className="hover:text-red-400 font-semibold">About</p></Link>
+                )}
+                {userData.email === process.env.REACT_APP_ADMIN_EMAIL ? (
                   <Link to={"/newproduct"} className="text-white no-underline"><p className="hover:text-red-400 font-semibold">New Product</p></Link>
+                ): (
+                  <Link to={"/contact"} className="text-white no-underline"><p className="hover:text-red-400 font-semibold">Contact</p></Link>
                 )}
                   {userData.email ? (
                     <Link to={"/login"} className="text-white no-underline" onClick={handleLogout}><p className="hover:text-red-400 font-semibold">Logout</p></Link>

@@ -35,10 +35,10 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const { email, password } = data;
-    const isGmail = email.endsWith("@gmail.com");
+    const isGmail = (email.length >0 )
 
     if (!isGmail) {
-      alert("Please enter a valid Gmail address");
+      toast("Please enter a valid Gmail address");
       return;
     }
     if (isGmail) {
@@ -58,11 +58,10 @@ const Login = () => {
         } else {
           toast("Logged in Successfully");
           dispatch(loginRedux(dataRes));
-          console.log(userData);
           navigate("/");
         }
       } else {
-        alert("Please Enter required fields");
+        toast("Please Enter required fields");
       }
     }
   };
@@ -104,7 +103,7 @@ const Login = () => {
             </span>
           </div>
 
-          <div className="flex  space-x-2">
+          <div className="flex  items-center">
           <button className="w-full max-w-[150px] m-auto  bg-red-500 hover:bg-red-600 cursor-pointer  text-white text-xl font-medium text-center py-1 rounded-full mt-4">
           Login
         </button>

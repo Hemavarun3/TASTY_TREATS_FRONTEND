@@ -31,7 +31,7 @@ const AllProduct = ({ heading }) => {
     <div className="my-5 flex flex-col items-center">
       <h2 className="font-bold text-main2color text-2xl  mb-4">{heading}</h2>
 
-      <div className="flex gap-4 justify-center overflow-scroll scrollbar-none">
+      <div className="flex space-x-5 justify-center overflow-scroll scrollbar-none">
         {categoryList.length > 0 ? (
           categoryList.map((el) => (
             <FilterProduct
@@ -48,7 +48,7 @@ const AllProduct = ({ heading }) => {
         )}
       </div>
 
-      <div className="gap-5 my-4 flex md:flex-row md:flex-wrap flex-col items-center">
+      <div className="gap-16 my-4 flex md:flex-row md:flex-wrap flex-col justify-center">
         {dataFilter.length > 0 ? (
           dataFilter.map((el) => (
             <CardFeature
