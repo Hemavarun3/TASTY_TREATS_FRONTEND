@@ -13,10 +13,10 @@ export const userSlice = createSlice({
   initialState,
   reducers: {
     loginRedux: (state, action) => {
-      state._id = action.payload.data.user._id;
-      state.name = action.payload.data.user.name;
-      state.address = action.payload.data.user.address;
-      state.email = action.payload.data.user.email;
+      state._id = action.payload._id;
+      state.name = action.payload.name;
+      state.address = action.payload.address;
+      state.email = action.payload.email;
       state.image = "";
     },
     logoutRedux: (state, action) => {

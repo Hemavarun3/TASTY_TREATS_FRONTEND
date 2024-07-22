@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 import loginSignupImage from "../assest/login-animation.gif";
 import { BiShow, BiHide } from "react-icons/bi";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { loginRedux } from "../redux/userSlice";
 
 const Login = () => {
@@ -14,19 +13,17 @@ const Login = () => {
     password: "",
   });
   const navigate = useNavigate();
-  const userData = useSelector((state) => state.user);
-
   const dispatch = useDispatch();
 
   const handleShowPassword = () => {
-    setShowPassword((preve) => !preve);
+    setShowPassword((prev) => !prev);
   };
 
   const handleOnChange = (e) => {
     const { name, value } = e.target;
-    setData((preve) => {
+    setData((prev) => {
       return {
-        ...preve,
+        ...prev,
         [name]: value,
       };
     });
@@ -35,18 +32,18 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const { email, password } = data;
-    const isGmail = (email.length >0 )
 
-    if (!isGmail) {
+    if (!email) {
       toast("Please enter a valid Gmail address");
       return;
     }
-    if (isGmail) {
-      if (email && password) {
+
+    if (email && password) {
+      try {
         const fetchData = await fetch(`${process.env.REACT_APP_SERVER_DOMAIN}/users/login`, {
           method: "POST",
           headers: {
-            "content-type": "application/json",
+            "Content-Type": "application/json",
           },
           body: JSON.stringify(data),
         });
@@ -57,27 +54,31 @@ const Login = () => {
           navigate("/login");
         } else {
           toast("Logged in Successfully");
-          dispatch(loginRedux(dataRes));
+          dispatch(loginRedux(dataRes.data.user));
+          localStorage.setItem("user", JSON.stringify(dataRes.data.user));
+          localStorage.setItem("accessToken", dataRes.data.accessToken);
+          localStorage.setItem("refreshToken", dataRes.data.refreshToken);
           navigate("/");
         }
-      } else {
-        toast("Please Enter required fields");
+      } catch (error) {
+        toast("Login failed");
       }
+    } else {
+      toast("Please enter the required fields");
     }
   };
 
   return (
     <div className="p-3 mt-20 md:p-4">
-      <div className="w-full max-w-sm bg-maincolor m-auto flex  flex-col p-4 rounded-2xl">
-        {/* <h1 className='text-center text-2xl font-bold'>Sign up</h1> */}
+      <div className="w-full max-w-sm bg-maincolor m-auto flex flex-col p-4 rounded-2xl">
         <div className="w-20 overflow-hidden rounded-full drop-shadow-md shadow-md m-auto">
-          <img src={loginSignupImage} className="w-full" alt="ima"/>
+          <img src={loginSignupImage} className="w-full" alt="login animation"/>
         </div>
 
         <form className="w-full py-3 flex flex-col" onSubmit={handleSubmit}>
           <label htmlFor="email"><span className="text-white">Email</span></label>
           <input
-            type={"email"}
+            type="email"
             id="email"
             name="email"
             className="mt-1 mb-2 w-full bg-slate-200 px-2 py-1 rounded focus-within:outline-blue-300"
@@ -91,7 +92,7 @@ const Login = () => {
               type={showPassword ? "text" : "password"}
               id="password"
               name="password"
-              className=" w-full bg-slate-200 border-none outline-none "
+              className="w-full bg-slate-200 border-none outline-none"
               value={data.password}
               onChange={handleOnChange}
             />
@@ -103,15 +104,15 @@ const Login = () => {
             </span>
           </div>
 
-          <div className="flex  items-center">
-          <button className="w-full max-w-[150px] m-auto  bg-red-500 hover:bg-red-600 cursor-pointer  text-white text-xl font-medium text-center py-1 rounded-full mt-4">
-          Login
-        </button>
-        <button className="w-full max-w-[150px] m-auto  bg-red-500 hover:bg-red-600 cursor-pointer  text-white text-xl font-medium text-center py-1 rounded-full mt-4">
-        <Link to={"/signup"} className="text-white no-underline">
-        Sign Up
-        </Link>
-        </button>
+          <div className="flex items-center">
+            <button className="w-full max-w-[150px] m-auto bg-red-500 hover:bg-red-600 cursor-pointer text-white text-xl font-medium text-center py-1 rounded-full mt-4">
+              Login
+            </button>
+            <button className="w-full max-w-[150px] m-auto bg-red-500 hover:bg-red-600 cursor-pointer text-white text-xl font-medium text-center py-1 rounded-full mt-4">
+              <Link to={"/signup"} className="text-white no-underline">
+                Sign Up
+              </Link>
+            </button>
           </div>
         </form>
       </div>

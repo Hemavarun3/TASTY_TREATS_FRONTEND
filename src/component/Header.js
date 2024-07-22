@@ -12,19 +12,42 @@ const Header = () => {
   const menuRef = useRef();
 
   const handleShowMenu = () => {
-    setShowMenu((preve) => !preve);
+    setShowMenu((prev) => !prev);
     setTimeout(() => {
-      setShowMenu((preve) => !preve);
-  }, 2000);
+      setShowMenu((prev) => !prev);
+    }, 2000);
   };
-
+  const handleLogout2 = async () => {
+    const user = localStorage.getItem("user");
+    if (user) {
+      const fdata = JSON.parse(user); // Parse JSON string to object
+      console.log(user);
+      try {
+        const fetchData = await fetch(`${process.env.REACT_APP_SERVER_DOMAIN}/users/logout`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(fdata)
+        });
+        const result = await fetchData.json();
+        toast(result.data);
+        localStorage.removeItem("user");
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("refreshToken");
+      } catch (error) {
+        toast("Failed to logout");
+        console.log(error.message)
+      }
+    }
+  };
   const handleLogout = () => {
     dispatch(logoutRedux());
-    toast("Logout successfully");
+    handleLogout2();
   };
 
   return (
-    <header className="shadow-md h-24 md:px-32 px-6 fixed z-10 w-full font-semibold bg-maincolor text-white">
+    <div className="shadow-md h-24 md:px-32 px-16 fixed z-10 w-full font-semibold bg-maincolor text-white">
       <div className="flex items-center h-full justify-between">
         <Link to={""} className="no-underline">
           <div className="h-10">
@@ -35,42 +58,58 @@ const Header = () => {
         </Link>
 
         <div className="flex items-center">
-          <nav className="text-base md:text-lg hidden md:flex space-x-12">
-          <Link to={"/"}  className="text-white no-underline"><p className="hover:text-red-400 font-semibold">Home</p></Link>
-          <Link to={"/menu"} className="text-white no-underline"><p className="hover:text-red-400 font-semibold">Menu</p></Link>
-          {userData.email !== process.env.REACT_APP_ADMIN_EMAIL && (
-            <Link to={"/orders"} className="text-white no-underline"><p className="hover:text-red-400 font-semibold">Orders</p></Link>
-          )}
-          {userData.email === process.env.REACT_APP_ADMIN_EMAIL ? (
-            <Link to={"/dashboard"} className="text-white no-underline"><p className="hover:text-red-400 font-semibold">Dashboard</p></Link>
-          ): (
-            <Link to={"/about"} className="text-white no-underline"><p className="hover:text-red-400 font-semibold">About</p></Link>
-          )}
-          {userData.email === process.env.REACT_APP_ADMIN_EMAIL ? (
-            <Link to={"/newproduct"} className="text-white no-underline"><p className="hover:text-red-400 font-semibold">New Product</p></Link>
-          ): (
-            <Link to={"/contact"} className="text-white no-underline"><p className="hover:text-red-400 font-semibold">Contact</p></Link>
-          )}
-
+          <nav className="text-base md:text-lg space-x-12 hidden lg:flex" >
+            <Link to={"/"} className="text-white no-underline">
+              <p className="hover:text-red-400 font-semibold">Home</p>
+            </Link>
+            <Link to={"/menu"} className="text-white no-underline">
+              <p className="hover:text-red-400 font-semibold">Menu</p>
+            </Link>
+            {userData.email !== process.env.REACT_APP_ADMIN_EMAIL && (
+              <Link to={"/orders"} className="text-white no-underline">
+                <p className="hover:text-red-400 font-semibold">Orders</p>
+              </Link>
+            )}
+            {userData.email === process.env.REACT_APP_ADMIN_EMAIL ? (
+              <Link to={"/dashboard"} className="text-white no-underline">
+                <p className="hover:text-red-400 font-semibold">Dashboard</p>
+              </Link>
+            ) : (
+              <Link to={"/about"} className="text-white no-underline">
+                <p className="hover:text-red-400 font-semibold">About</p>
+              </Link>
+            )}
+            {userData.email === process.env.REACT_APP_ADMIN_EMAIL ? (
+              <Link to={"/newproduct"} className="text-white no-underline">
+                <p className="hover:text-red-400 font-semibold">New Product</p>
+              </Link>
+            ) : (
+              <Link to={"/contact"} className="text-white no-underline">
+                <p className="hover:text-red-400 font-semibold">Contact</p>
+              </Link>
+            )}
           </nav>
         </div>
 
         <div className="flex items-center space-x-10">
           <div className="text-2xl relative text-white">
             <Link to={"cart"} style={{ color: "white", textDecoration: "none" }}>
-             <i class="fa-solid fa-cart-shopping text-white "></i>
+              <i className="fa-solid fa-cart-shopping text-white "></i>
             </Link>
           </div>
 
           <div className="relative">
-            <button className="bg-[#df2020] flex space-x-1 rounded-2xl items-center px-2 py-2 text-white" onClick={handleShowMenu} >
-                <div className=" text-3xl cursor-pointer w-8 h-8 rounded-full overflow-hidden drop-shadow-md">
-                  {userData.image ? (
-                    <img src={userData.image} className="h-full w-full" alt="user" />
-                  ) : (
-                    <HiOutlineUserCircle />
-                  )}
-                </div>
+            <button
+              className="bg-[#df2020] flex space-x-1 rounded-2xl items-center px-2 py-2 text-white"
+              onClick={handleShowMenu}
+            >
+              <div className="text-3xl cursor-pointer w-8 h-8 rounded-full overflow-hidden drop-shadow-md">
+                {userData.image ? (
+                  <img src={userData.image} className="h-full w-full" alt="user" />
+                ) : (
+                  <HiOutlineUserCircle />
+                )}
+              </div>
               <div className="hidden md:block">
                 {userData.email ? (
                   <Link to={"login"} className="cursor-pointer text-white px-2 no-underline" onClick={handleLogout}>
@@ -85,27 +124,48 @@ const Header = () => {
             </button>
 
             {showMenu && (
-              <div ref={menuRef} className="right-0  bg-yellow-600 border  py-2 shadow-lg rounded-md w-48 z-50 md:hidden mt-2 absolute flex font-semibold" >
+              <div
+                ref={menuRef}
+                className="right-0 bg-yellow-600 border py-2 shadow-lg rounded-md w-48 z-50 md:hidden mt-2 absolute flex font-semibold"
+              >
                 <nav className="text-base md:text-lg flex flex-col px-4 py-2">
-                <Link to={"/"}  className="text-white no-underline"><p className="hover:text-red-400 font-semibold">Home</p></Link>
-                <Link to={"/menu"} className="text-white no-underline"><p className="hover:text-red-400 font-semibold">Menu</p></Link>
-                {userData.email !== process.env.REACT_APP_ADMIN_EMAIL && (
-                  <Link to={"/orders"} className="text-white no-underline"><p className="hover:text-red-400 font-semibold">Orders</p></Link>
-                )}
-                {userData.email === process.env.REACT_APP_ADMIN_EMAIL ? (
-                  <Link to={"/dashboard"} className="text-white no-underline"><p className="hover:text-red-400 font-semibold">Dashboard</p></Link>
-                ): (
-                  <Link to={"/about"} className="text-white no-underline"><p className="hover:text-red-400 font-semibold">About</p></Link>
-                )}
-                {userData.email === process.env.REACT_APP_ADMIN_EMAIL ? (
-                  <Link to={"/newproduct"} className="text-white no-underline"><p className="hover:text-red-400 font-semibold">New Product</p></Link>
-                ): (
-                  <Link to={"/contact"} className="text-white no-underline"><p className="hover:text-red-400 font-semibold">Contact</p></Link>
-                )}
-                  {userData.email ? (
-                    <Link to={"/login"} className="text-white no-underline" onClick={handleLogout}><p className="hover:text-red-400 font-semibold">Logout</p></Link>
+                  <Link to={"/"} className="text-white no-underline">
+                    <p className="hover:text-red-400 font-semibold">Home</p>
+                  </Link>
+                  <Link to={"/menu"} className="text-white no-underline">
+                    <p className="hover:text-red-400 font-semibold">Menu</p>
+                  </Link>
+                  {userData.email !== process.env.REACT_APP_ADMIN_EMAIL && (
+                    <Link to={"/orders"} className="text-white no-underline">
+                      <p className="hover:text-red-400 font-semibold">Orders</p>
+                    </Link>
+                  )}
+                  {userData.email === process.env.REACT_APP_ADMIN_EMAIL ? (
+                    <Link to={"/dashboard"} className="text-white no-underline">
+                      <p className="hover:text-red-400 font-semibold">Dashboard</p>
+                    </Link>
                   ) : (
-                    <Link to={"/login"} className="text-white no-underline"><p className="hover:text-red-400 font-semibold">Login</p></Link>
+                    <Link to={"/about"} className="text-white no-underline">
+                      <p className="hover:text-red-400 font-semibold">About</p>
+                    </Link>
+                  )}
+                  {userData.email === process.env.REACT_APP_ADMIN_EMAIL ? (
+                    <Link to={"/newproduct"} className="text-white no-underline">
+                      <p className="hover:text-red-400 font-semibold">New Product</p>
+                    </Link>
+                  ) : (
+                    <Link to={"/contact"} className="text-white no-underline">
+                      <p className="hover:text-red-400 font-semibold">Contact</p>
+                    </Link>
+                  )}
+                  {userData.email ? (
+                    <Link to={"/login"} className="text-white no-underline" onClick={handleLogout}>
+                      <p className="hover:text-red-400 font-semibold">Logout</p>
+                    </Link>
+                  ) : (
+                    <Link to={"/login"} className="text-white no-underline">
+                      <p className="hover:text-red-400 font-semibold">Login</p>
+                    </Link>
                   )}
                 </nav>
               </div>
@@ -113,7 +173,7 @@ const Header = () => {
           </div>
         </div>
       </div>
-    </header>
+    </div>
   );
 };
 
