@@ -17,6 +17,7 @@ const Header = () => {
       setShowMenu((prev) => !prev);
     }, 2000);
   };
+
   const handleLogout2 = async () => {
     const user = localStorage.getItem("user");
     if (user) {
@@ -41,6 +42,7 @@ const Header = () => {
       }
     }
   };
+
   const handleLogout = () => {
     dispatch(logoutRedux());
     handleLogout2();
@@ -58,19 +60,19 @@ const Header = () => {
         </Link>
 
         <div className="flex items-center">
-          <nav className="text-base md:text-lg space-x-12 hidden lg:flex" >
+          <nav className="text-base md:text-lg space-x-12 hidden lg:flex">
             <Link to={"/"} className="text-white no-underline">
               <p className="hover:text-red-400 font-semibold">Home</p>
             </Link>
             <Link to={"/menu"} className="text-white no-underline">
               <p className="hover:text-red-400 font-semibold">Menu</p>
             </Link>
-            {userData.email !== process.env.REACT_APP_ADMIN_EMAIL && (
+            {!userData.isAdmin && (
               <Link to={"/orders"} className="text-white no-underline">
                 <p className="hover:text-red-400 font-semibold">Orders</p>
               </Link>
             )}
-            {userData.email === process.env.REACT_APP_ADMIN_EMAIL ? (
+            {userData.isAdmin ? (
               <Link to={"/dashboard"} className="text-white no-underline">
                 <p className="hover:text-red-400 font-semibold">Dashboard</p>
               </Link>
@@ -79,7 +81,7 @@ const Header = () => {
                 <p className="hover:text-red-400 font-semibold">About</p>
               </Link>
             )}
-            {userData.email === process.env.REACT_APP_ADMIN_EMAIL ? (
+            {userData.isAdmin ? (
               <Link to={"/newproduct"} className="text-white no-underline">
                 <p className="hover:text-red-400 font-semibold">New Product</p>
               </Link>
@@ -94,7 +96,7 @@ const Header = () => {
         <div className="flex items-center space-x-10">
           <div className="text-2xl relative text-white">
             <Link to={"cart"} style={{ color: "white", textDecoration: "none" }}>
-              <i className="fa-solid fa-cart-shopping text-white "></i>
+              <i className="fa-solid fa-cart-shopping text-white"></i>
             </Link>
           </div>
 
@@ -135,12 +137,12 @@ const Header = () => {
                   <Link to={"/menu"} className="text-white no-underline">
                     <p className="hover:text-red-400 font-semibold">Menu</p>
                   </Link>
-                  {userData.email !== process.env.REACT_APP_ADMIN_EMAIL && (
+                  {!userData.isAdmin && (
                     <Link to={"/orders"} className="text-white no-underline">
                       <p className="hover:text-red-400 font-semibold">Orders</p>
                     </Link>
                   )}
-                  {userData.email === process.env.REACT_APP_ADMIN_EMAIL ? (
+                  {userData.isAdmin ? (
                     <Link to={"/dashboard"} className="text-white no-underline">
                       <p className="hover:text-red-400 font-semibold">Dashboard</p>
                     </Link>
@@ -149,7 +151,7 @@ const Header = () => {
                       <p className="hover:text-red-400 font-semibold">About</p>
                     </Link>
                   )}
-                  {userData.email === process.env.REACT_APP_ADMIN_EMAIL ? (
+                  {userData.isAdmin ? (
                     <Link to={"/newproduct"} className="text-white no-underline">
                       <p className="hover:text-red-400 font-semibold">New Product</p>
                     </Link>

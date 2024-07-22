@@ -6,6 +6,7 @@ const initialState = {
   image: "",
   address : "",
   _id: "",
+  isAdmin : false
 };
 
 export const userSlice = createSlice({
@@ -17,6 +18,7 @@ export const userSlice = createSlice({
       state.name = action.payload.name;
       state.address = action.payload.address;
       state.email = action.payload.email;
+      state.isAdmin =action.payload.isAdmin;
       state.image = "";
     },
     logoutRedux: (state, action) => {
@@ -25,6 +27,7 @@ export const userSlice = createSlice({
       state.address = "";
       state.email = "";
       state.image = "";
+      state.isAdmin = false
     },
   },
 });
